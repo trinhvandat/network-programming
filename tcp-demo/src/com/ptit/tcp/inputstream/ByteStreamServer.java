@@ -37,10 +37,9 @@ public class ByteStreamServer {
                     logger.info("Student's information exactly!");
                     String exam = "";
                     for (int index = 0; index <= 10; index ++){
-                        exam += Math.random() + " ";
+                        exam += Math.random() + ";";
                     }
                     exam += Math.random();
-                    exam = "1;2;3;4;5";
                     logger.info("exam for student: " + exam);
                     byte[] examBytesArray = exam.getBytes();
                     logger.info("all byte count: " + examBytesArray.length);

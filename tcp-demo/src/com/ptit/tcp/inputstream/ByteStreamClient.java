@@ -29,17 +29,16 @@ public class ByteStreamClient {
 
             String myExam = "";
             logger.info("exam: " + myExam);
-            int a = 0;
-            while ((a = dataInputStream.read()) != -1){
-                char h = (char) a;
-                myExam += h;
+            int examValueInt = 0;
+            while ((examValueInt = dataInputStream.read()) != -1){
+                myExam += (char) examValueInt;
             }
             logger.info("exam: " + myExam);
 
             String[] myExamStringsArray = myExam.split(";");
-            List<Integer> myExamDoubleList = new ArrayList<>();
+            List<Double> myExamDoubleList = new ArrayList<>();
             for (String exam : myExamStringsArray){
-                myExamDoubleList.add(Integer.valueOf(exam));
+                myExamDoubleList.add(Double.valueOf(exam));
             }
             logger.info("double list: " + myExamDoubleList.toString());
         } catch (UnknownHostException e) {
