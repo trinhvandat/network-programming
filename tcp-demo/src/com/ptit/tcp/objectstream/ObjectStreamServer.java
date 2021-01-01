@@ -3,6 +3,7 @@ package com.ptit.tcp.objectstream;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Random;
 import java.util.logging.Logger;
 
 public class ObjectStreamServer {
@@ -24,12 +25,25 @@ public class ObjectStreamServer {
                 InputStream inputStream = socket.getInputStream();
                 ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
 
+                Object objectInfo = objectInputStream.readObject();
+                Student studentInfo = (Student) objectInfo;
+
                 OutputStream outputStream = socket.getOutputStream();
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
 
-                Object objectInfo = objectInputStream.readObject();
-                Student studentInfo = (Student) objectInfo;
-                logger.info("Student's info: " + studentInfo.toString());
+                String studentCode = studentInfo.getStudentCode();
+                logger.info("student's code: " + studentCode);
+
+                if (isStudent(studentCode)){
+                    String exam = getExample();
+                    objectOutputStream.writeObject((Object) exam);
+                    objectOutputStream.flush();
+                }
+                else {
+                    String message = "Invalid student's code.";
+                    objectOutputStream.writeObject((Object) message);
+                    objectOutputStream.flush();
+                }
 
             }
         } catch (IOException e) {
@@ -40,6 +54,29 @@ public class ObjectStreamServer {
             e.printStackTrace();
         }
 
+    }
+
+    private static boolean isStudent(String studentCode){
+        boolean result = false;
+        if (studentCode.toLowerCase().equals("b17dccn123")){
+            result = true;
+        }
+        return result;
+    }
+
+    private static String getExample(){
+        /**
+         * random variable with int value between 0 to 25;
+         */
+        Random random = new Random();
+
+        String exam = "";
+        for (int index = 0; index < 9; index ++){
+            exam += random.nextInt(25) + ";";
+        }
+        exam += random.nextInt(25);
+
+        return exam;
     }
 
 }
