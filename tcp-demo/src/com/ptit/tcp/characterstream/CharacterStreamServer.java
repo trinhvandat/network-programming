@@ -22,25 +22,30 @@ public class CharacterStreamServer {
                 logger.info("connecting to client: " + socket.getInetAddress() + ":" + socket.getPort());
 
                 InputStream inputStream = socket.getInputStream();
-                OutputStream outputStream = socket.getOutputStream();
-
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
                 String studentInfo = bufferedReader.readLine();
                 logger.info("student's info: " + studentInfo);
 
+                OutputStream outputStream = socket.getOutputStream();
                 PrintWriter printWriter = new PrintWriter(outputStream);
-                System.out.println("a");
+
+                System.out.println("output");
+
                 if (verifyStudent(studentInfo.split(";")[0])){
                     logger.info("Correct student's code");
                     String exam = getExample();
                     printWriter.write(exam);
+                    printWriter.flush();
                 }
                 else{
                     logger.warning("incorrect student's info");
                     String inValidInfo = "InCorrect student's code. Please check your student's code and try again. Thank you!!!";
                     printWriter.write(inValidInfo);
+                    printWriter.flush();
                 }
+
+                printWriter.close();
 
             }
         } catch (IOException e) {
