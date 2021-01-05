@@ -24,6 +24,11 @@ public class Server {
 
                 String mess = new String(message, 0, message.length);
                 System.out.println(mess);
+
+                String response = "system ok";
+                System.out.println(socket.getInetAddress() + ":" + socket.getPort());
+                DatagramPacket sendPackage = new DatagramPacket(response.getBytes(), response.getBytes().length,InetAddress.getByName("localhost"), 1109);
+                socket.send(sendPackage);
             }
         } catch (UnknownHostException e) {
             logger.warning("Unknown host: " + HOST);

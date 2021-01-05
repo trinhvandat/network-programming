@@ -16,12 +16,17 @@ public class Client {
 
         try {
             InetAddress address = InetAddress.getByName(HOST);
-            DatagramSocket socket = new DatagramSocket();
+            DatagramSocket socket = new DatagramSocket(1109);
 
             String message = "hello";
             byte[] bytes = message.getBytes();
             DatagramPacket receiveMessage = new DatagramPacket(bytes, bytes.length, address, PORT);
             socket.send(receiveMessage);
+
+            byte[] responseBytes = new byte[1024];
+            DatagramPacket response = new DatagramPacket(responseBytes, responseBytes.length, address, PORT);
+            socket.receive(response);
+            System.out.println(new String(responseBytes, 0, responseBytes.length));
 
         } catch (UnknownHostException e) {
             logger.warning("Unknown host: " + HOST);
