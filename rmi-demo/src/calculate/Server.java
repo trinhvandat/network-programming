@@ -6,6 +6,8 @@ import java.net.MalformedURLException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 public class Server {
@@ -15,12 +17,10 @@ public class Server {
             AdderRemote adderRemote = new AdderRemote();
             System.out.println("Exporting calculate.Adder!");
 
-            UnicastRemoteObject.exportObject(adderRemote);
-            Naming.bind("rmi://localhost/add", adderRemote);
-            System.out.println("Register adder");
+            Registry registry = LocateRegistry.createRegistry(1109);
+            registry.bind("add", adderRemote);
+            System.out.println("register ok");
         } catch (RemoteException e) {
-            e.printStackTrace();
-        } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (AlreadyBoundException e) {
             e.printStackTrace();

@@ -11,10 +11,8 @@ public class Server{
     public static void main(String[] args) {
         try {
             HelloIml helloIml = new HelloIml();
-            Hello stub = (Hello) UnicastRemoteObject.exportObject(helloIml, 0);
-
-            Registry registry = LocateRegistry.getRegistry();
-            registry.bind("Hello", stub);
+            Registry registry = LocateRegistry.createRegistry(1109);
+            registry.bind("hello", helloIml);
 
             System.err.println("Server ready");
         } catch (RemoteException | AlreadyBoundException e) {
